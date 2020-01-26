@@ -1,24 +1,30 @@
-
-const morgan = require('morgan');
-const helmet = require('helmet');const Joi = require("@hapi/joi");
+const morgan = require("morgan");
+const helmet = require("helmet");
+const Joi = require("@hapi/joi");
 const logger = require("./logger");
 const authenticator = require("./authenticator");
 const express = require("express");
 
 const app = express();
 
+const env = process.env.NODE_ENV || "development";
+console.log(`app: ${app.get("env")}`);
 app.use(logger);
 app.use(authenticator);
 // this line is needed to allow us to parse the body of a post request
 app.use(express.json());
 // { extended: true } allows us to pass arrays and complex objects
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static("public"));
 // Helmet helps you secure your Express apps by setting various HTTP headers
 app.use(helmet());
-// HTTP request logger middleware. Probably not a good idea to turn this on in PROD
-// as it will log every request and make things slower!
-app.use(morgan('tiny'));
+
+if (env === "development") {
+  // HTTP request logger middleware. Probably not a good idea to turn this on in PROD
+  // as it will log every request and make things slower!
+  app.use(morgan("tiny"));
+  console.log('morgan enabled');
+}
 
 let courses = [
   {
