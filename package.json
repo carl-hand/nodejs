@@ -5,13 +5,17 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:dev": "nodemon index.js"
+    "start:dev": "env DEBUG=app:startup,app:db nodemon index.js",
+    "start:dev:startup": "env DEBUG=app:startup nodemon index.js",
+    "start:dev:db": "env DEBUG=app:db nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^17.1.0",
+    "config": "^3.2.5",
+    "debug": "^4.1.1",
     "express": "^4.17.1",
     "helmet": "^3.21.2",
     "morgan": "^1.9.1",
